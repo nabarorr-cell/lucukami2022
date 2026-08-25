@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>Kata Kehidupan — Sebuah Perjalanan</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,'Times New Roman',serif;background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
+.video-bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-5;filter:brightness(.48) saturate(.85) contrast(1.08)}
+.overlay{position:fixed;inset:0;z-index:-4;background:linear-gradient(180deg,rgba(0,0,0,.48),rgba(0,0,0,.2) 35%,rgba(0,0,0,.7) 100%)}
+.grain{position:fixed;inset:-50%;z-index:-3;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");transform:rotate(7deg)}
+.top{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:22px 30px;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);pointer-events:none}
+.brand{font:600 11px Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.nav{font:11px Arial,sans-serif;letter-spacing:.12em;color:rgba(255,255,255,.55)}
+.page{position:relative;z-index:1}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 22px 70px}
+.hero-inner{max-width:900px}
+.eyebrow{font:600 11px Arial,sans-serif;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:24px}
+.hero h1{font-size:clamp(42px,7vw,90px);font-weight:400;line-height:1.02;letter-spacing:-.04em;text-shadow:0 5px 35px #000}
+.hero p{max-width:650px;margin:28px auto 0;color:rgba(255,255,255,.7);font:14px/1.8 Arial,sans-serif}
+.scroll{display:inline-block;margin-top:55px;color:rgba(255,255,255,.5);font:10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+.scroll::after{content:'↓';display:block;font-size:22px;margin-top:12px}
+.section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:110px 22px}
+.section-inner{width:min(900px,100%);text-align:center;padding:70px 30px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.09);border-radius:28px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 30px 100px rgba(0,0,0,.25)}
+.number{font:600 10px Arial,sans-serif;letter-spacing:.3em;color:rgba(255,255,255,.4);margin-bottom:28px}
+.quote{font-size:clamp(30px,5vw,62px);line-height:1.13;font-weight:400;letter-spacing:-.025em;text-shadow:0 4px 28px rgba(0,0,0,.75)}
+.author{margin-top:30px;color:rgba(255,255,255,.55);font:12px/1.6 Arial,sans-serif;letter-spacing:.08em}
+.line{width:55px;height:1px;background:rgba(255,255,255,.45);margin:28px auto 0}
+.small{min-height:75vh}
+.final{min-height:90vh;padding-bottom:160px}
+.final h2{font-size:clamp(34px,5vw,65px);font-weight:400;line-height:1.15}
+.final p{max-width:620px;margin:24px auto 0;color:rgba(255,255,255,.62);font:14px/1.9 Arial,sans-serif}
+.controls{position:fixed;z-index:20;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:9px;max-width:calc(100% - 28px)}
+button{border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.38);color:#fff;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px;padding:11px 16px;cursor:pointer;font:600 10px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;transition:.25s}
+button:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.45)}
+.progress{position:fixed;z-index:30;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,.12)}
+.progress span{display:block;height:100%;width:0;background:rgba(255,255,255,.7)}
+@media(max-width:600px){.top{padding:18px 18px}.nav{display:none}.hero{padding:100px 18px 70px}.hero p{font-size:13px}.section{padding:90px 16px}.section-inner{padding:60px 20px;border-radius:22px}.quote{font-size:clamp(29px,9vw,46px)}.controls{bottom:18px}button{padding:10px 12px;font-size:9px}.small{min-height:80vh}}
+</style>
+</head>
+<body>
+<video id="bgVideo" class="video-bg" autoplay muted loop playsinline preload="auto">
+  <source src="background.mp4" type="video/mp4">
+</video>
+<audio id="music" preload="auto" loop playsinline><source src="music.mp3" type="audio/mpeg"></audio>
+<div class="overlay"></div><div class="grain"></div>
+<header class="top"><div class="brand">Kata Kehidupan</div><div class="nav">Sebuah perjalanan</div></header>
+<main class="page">
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Tentang kehidupan</div>
+    <h1>Hidup adalah perjalanan,<br>bukan perlombaan.</h1>
+    <p>Berhenti sejenak. Tarik napas. Baca perlahan. Mungkin ada satu kalimat di sini yang sedang kamu butuhkan hari ini.</p>
+    <a class="scroll" href="#satu">Gulir ke bawah</a>
+  </div>
+</section>
+
+<section class="section" id="satu"><div class="section-inner"><div class="number">01 — PERJALANAN</div><div class="quote">“Hidup tidak harus selalu mudah, yang penting kita tidak berhenti melangkah.”</div><div class="line"></div><div class="author">Sebuah pengingat untuk diri sendiri</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">02 — KEHILANGAN</div><div class="quote">“Kadang kita kehilangan sesuatu, hanya untuk menemukan diri kita kembali.”</div><div class="line"></div><div class="author">Tentang menerima dan menemukan diri</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">03 — MELEPASKAN</div><div class="quote">“Tidak semua yang pergi harus dikejar. Ada yang memang ditakdirkan menjadi pelajaran.”</div><div class="line"></div><div class="author">Tentang ikhlas</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">04 — KESABARAN</div><div class="quote">“Jangan bandingkan perjalananmu dengan orang lain. Setiap orang punya waktunya sendiri.”</div><div class="line"></div><div class="author">Tentang percaya pada proses</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">05 — PERJUANGAN</div><div class="quote">“Hari yang berat akan berlalu. Kamu hanya perlu bertahan sedikit lebih lama.”</div><div class="line"></div><div class="author">Untuk kamu yang sedang berjuang</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">06 — KEDewasaan</div><div class="quote">“Diam bukan berarti lemah. Kadang diam adalah cara paling dewasa untuk menjaga hati.”</div><div class="line"></div><div class="author">Tentang menjaga diri</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">07 — WAKTU</div><div class="quote">“Tidak semua hal harus terjadi hari ini. Ada hal baik yang memang membutuhkan waktu.”</div><div class="line"></div><div class="author">Tentang kesabaran</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">08 — MASA LALU</div><div class="quote">“Masa lalu tidak bisa diubah, tetapi cara kita melangkah setelahnya selalu bisa dipilih.”</div><div class="line"></div><div class="author">Tentang memulai lagi</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">09 — DIRI SENDIRI</div><div class="quote">“Jangan terlalu keras kepada dirimu sendiri. Kamu juga sedang belajar menjalani hidup.”</div><div class="line"></div><div class="author">Tentang mencintai diri</div></div></section>
+<section class="section"><div class="section-inner"><div class="number">10 — HARAPAN</div><div class="quote">“Selama masih ada hari esok, selalu ada alasan untuk mencoba sekali lagi.”</div><div class="line"></div><div class="author">Tentang harapan</div></div></section>
+<section class="section final"><div class="section-inner"><div class="number">AKHIR PERJALANAN</div><h2>“Pada akhirnya, yang paling penting bukan seberapa jauh kita pergi, tetapi seberapa banyak kita belajar.”</h2><div class="line"></div><p>Terima kasih sudah berhenti sebentar di sini. Jika hidup sedang terasa berat, jangan menyerah. Pelan-pelan juga tetap maju.</p></div></section>
+</main>
+<div class="controls"><button id="musicBtn">♫ Musik: OFF</button><button id="topBtn">↑ Kembali ke atas</button></div>
+<div class="progress"><span id="progressBar"></span></div>
+<script>
+const video=document.getElementById('bgVideo');
+const musicBtn=document.getElementById('musicBtn');
+const topBtn=document.getElementById('topBtn');
+const progress=document.getElementById('progressBar');
+const music=document.getElementById('music');
+let playing=false;
+let musicReady=false;
+
+async function startMusic(){
+  try {
+    music.load();
+    await music.play();
+    playing=true;
+    musicReady=true;
+    musicBtn.textContent='♫ Musik: ON';
+    musicBtn.classList.add('active');
+  } catch(err) {
+    playing=false;
+    musicBtn.textContent='♫ Coba PLAY lagi';
+    console.error('Musik gagal diputar:', err);
+    alert('Musik belum bisa diputar. Pastikan file music.mp3 ada di folder yang sama dengan index.html, lalu klik tombol PLAY lagi.');
+  }
+}
+
+function stopMusic(){
+  music.pause();
+  playing=false;
+  musicBtn.textContent='♫ Musik: OFF';
+  musicBtn.classList.remove('active');
+}
+
+musicBtn.addEventListener('click',()=>playing?stopMusic():startMusic());
+music.addEventListener('ended',()=>{ if(!music.loop) stopMusic(); });
+
+// Membantu browser memulai audio setelah interaksi pengguna pertama.
+function unlockAudio(){
+  if(!playing) return;
+  music.play().catch(()=>{});
+}
+document.addEventListener('pointerdown', unlockAudio, {once:false});
+topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h>0?(scrollY/h)*100:0)+'%'});
+video.play().catch(()=>{});
+</script>
+</body>
+</html>
